@@ -6,9 +6,34 @@
     <title>OCR App</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js"></script>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        img { max-width: 100%; height: auto; margin-top: 10px; cursor: pointer; }
-        video { width: 100%; max-width: 400px; }
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+        }
+        #video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;  /* Full width */
+            height: 100vh; /* Full height */
+            object-fit: cover; /* Make the video fill the screen */
+        }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            margin-top: 10px; 
+            cursor: pointer; 
+        }
+        button, input { 
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
