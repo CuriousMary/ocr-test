@@ -6,37 +6,9 @@
     <title>OCR App</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js"></script>
     <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-        }
-        video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ensures video scales to cover the screen without distortion */
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        button, input {
-            margin: 10px;
-        }
-        #capturedImage {
-            display: none;
-        }
+        body { text-align: center; font-family: Arial, sans-serif; }
+        img { max-width: 100%; height: auto; margin-top: 10px; cursor: pointer; }
+        video { width: 100%; max-width: 400px; }
     </style>
 </head>
 <body>
@@ -65,7 +37,6 @@
                 reader.onload = () => {
                     image = reader.result;
                     capturedImage.src = image;
-                    capturedImage.style.display = "block";  // Show the captured image
                 };
                 reader.readAsDataURL(file);
             }
@@ -95,7 +66,6 @@
             
             image = canvas.toDataURL('image/png');
             capturedImage.src = image;
-            capturedImage.style.display = "block"; // Show the captured image
 
             // Save image as a file and trigger the upload process
             saveImage(image);
