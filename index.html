@@ -41,7 +41,10 @@
         });
         
         function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            // Access back camera
+            navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: { exact: "environment" } } 
+            })
                 .then(stream => {
                     video.srcObject = stream;
                 })
@@ -53,6 +56,11 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0);
+            
+            // Apply brightness and contrast filter
+            context.filter = 'brightness(1.2) contrast(1.5)';
+            context.drawImage(video, 0, 0); // Redraw with filter applied
+            
             image = canvas.toDataURL('image/png');
             capturedImage.src = image;
         }
