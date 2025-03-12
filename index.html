@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR App</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js"></script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        img { max-width: 100%; height: auto; margin-top: 10px; }
+        video { width: 100%; max-width: 400px; }
+    </style>
+</head>
+<body>
+    <h1>Image to Text (OCR)</h1>
+    <input type="file" accept="image/*" id="imageUpload">
+    <button onclick="startCamera()">Start Camera</button>
+    <video id="video" autoplay></video>
+    <button onclick="captureImage()">Capture Image</button>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <img id="capturedImage" alt="Captured Image">
+    <button onclick="extractText()">Extract Text</button>
+    <p id="outputText"></p>
+    
+    <script>
+        let image = null;
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const capturedImage = document.getElementById('capturedImage');
+        
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    image = reader.result;
+                    capturedImage.src = image;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(error => console.error("Camera Error:", error));
+        }
+        
+        function captureImage() {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0);
+            image = canvas.toDataURL('image/png');
+            capturedImage.src = image;
+        }
+        
+        function extractText() {
+            if (!image) return;
+            Tesseract.recognize(image, 'eng')
+                .then(({ data }) => {
+                    document.getElementById('outputText').innerText = data.text;
+                })
+                .catch(error => console.error("OCR Error:", error));
+        }
+    </script>
+</body>
+</html>
